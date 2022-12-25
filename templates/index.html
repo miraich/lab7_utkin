@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <title>URL Parser</title>
+    <script type="text/javascript">
+    function get(){
+    $.get("isrunning", function(data){
+    if(data == "true"){
+    $("#count").load("count");
+    $('#log').load("list.txt");
+    }else{
+    $("#sbm").attr("disabled", null);
+    $("#stop").attr("disabled", "true");
+    $("#count").load("count");
+    $('#log').load("list.txt");
+    }
+    });
+    }
+
+    function stop(){
+    $("#log").load("stop");
+    $("#sbm").attr("disabled", null);
+    $("#stop").attr("disabled", "true");
+    }
+
+    function start(kw){
+    if(kw != null){
+    $("#log").load("run?kw=" + kw);
+    setInterval(get, 5000);
+    $("#sbm").attr("disabled", "true");
+    $("#stop").attr("disabled",null);
+    }}
+
+    $(function(){
+    $.get("isrunning", function(data){
+    if(data == "false"){
+    $("#sbm").attr("onclick", "start( $('#kw').val() )");
+    $("#stop").attr("disabled","");
+    $("#sbm").attr("disabled",null);
+    get();
+    }else{
+    setInterval(get, 5000);
+    $("#sbm").attr("disabled", "true");
+    $("#stop").attr("disabled", null);
+    }
+    });
+    });
+    </script>
+  </head>
+  <body>
+     <div id="head">
+     <table border="3">
+     <tbody>
+     <tr><span style="color:rgb(0, 0, 0);font-size: 24;font-family: Verdana, Geneva, Tahoma, sans-serif;float: center;">Введите ссылку: </span><input type="text" id="kw" size="259" style="border: 10px solid rgb(0, 0, 0);padding: 20px;float: center;"> <button id="sbm" style="border: 10px solid rgb(0, 0, 0);margin-left: 900px;padding: 10px;font-family: Verdana, Geneva, Tahoma, sans-serif;">Start</button><button id="stop" style="border: 10px solid rgb(0, 0, 0);margin-left: 15px;padding: 10px;font-family: Verdana, Geneva, Tahoma, sans-serif;"  onclick="stop()">Stop</button></tr>
+     <p align = "center">  <span id="count" style="color:rgb(0, 0, 0)">0</span> ссылок </p><p align = "center"><a   id="download" href="list.txt?astype=plain" target="_blank">Скачать</a></p>
+     </tbody>
+     </table
+     </div>
+     <hr>
+     <div id="log">
+     </div>
+  </body>
+</html>
